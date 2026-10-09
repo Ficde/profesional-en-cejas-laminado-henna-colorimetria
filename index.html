@@ -1,0 +1,1264 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Espacio de Repaso - MOD 2 LAMINADO HENNA Y COLORIMETRÍA DE CEJAS</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --ficde-azul-dark: #134252;
+            --ficde-azul-light: #2c5c6e;
+            --ficde-naranja: #e68161;
+            --ficde-naranja-hover: #ff9f85;
+            --tarjeta-bg: #f0f4f5;
+            --input-bg: #e2e8eb;
+            --texto-principal: #0f2d38;
+            --texto-secundario: #4a636e;
+            --verde-exito: #2e7d32;
+            --verde-bg: #c8e6c9;
+            --rojo-error: #c62828;
+            --naranja-bg: #ffe0b2;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(135deg, var(--ficde-azul-dark) 0%, #0a252e 100%);
+            min-height: 100vh;
+            color: var(--texto-principal);
+            padding: 20px;
+            background-attachment: fixed;
+        }
+
+        .container { max-width: 1200px; margin: 0 auto; }
+
+        header {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            padding: 15px 30px;
+            border-radius: 16px;
+            margin-bottom: 40px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border: 1px solid rgba(255,255,255,0.1);
+        }
+
+        .logo-img { height: 50px; width: auto; filter: drop-shadow(0 2px 4px rgba(0,0,0,0.3)); }
+
+        .module-tag {
+            background: var(--ficde-naranja);
+            color: white;
+            padding: 8px 20px;
+            border-radius: 30px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            letter-spacing: 0.5px;
+        }
+
+        .welcome-card {
+            background: var(--tarjeta-bg);
+            border-radius: 20px;
+            padding: 40px;
+            text-align: center;
+            box-shadow: 0 15px 40px rgba(0,0,0,0.3);
+            border-bottom: 6px solid var(--ficde-naranja);
+            margin-bottom: 30px;
+        }
+
+        .welcome-title {
+            color: var(--ficde-azul-dark);
+            font-size: 2.2rem;
+            margin-bottom: 10px;
+            font-weight: 800;
+        }
+
+        .fede-avatar-large {
+            width: 140px; height: 140px;
+            margin: 0 auto 20px;
+            border-radius: 50%;
+            background: var(--ficde-naranja);
+            padding: 5px;
+            box-shadow: 0 10px 25px rgba(230, 129, 97, 0.5);
+            cursor: pointer;
+            transition: transform 0.3s;
+            overflow: hidden;
+        }
+
+        .fede-avatar-large:hover { transform: scale(1.1); }
+
+        .fede-avatar-large img {
+            width: 100%; height: 100%;
+            object-fit: cover;
+            border-radius: 50%;
+            border: 4px solid white;
+        }
+
+        .blocks-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+            gap: 20px;
+            justify-content: center;
+        }
+
+        .block-card {
+            background: var(--tarjeta-bg);
+            padding: 30px;
+            border-radius: 16px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: relative;
+            border: 2px solid transparent;
+            max-width: 400px;
+            margin: 0 auto;
+        }
+
+        .block-card:hover {
+            transform: translateY(-8px);
+            border-color: var(--ficde-naranja);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+        }
+
+        .block-icon {
+            font-size: 3rem; margin-bottom: 15px;
+            background: rgba(19, 66, 82, 0.1);
+            width: 70px; height: 70px;
+            display: flex; align-items: center; justify-content: center;
+            border-radius: 50%; color: var(--ficde-azul-dark);
+        }
+
+        .block-title { color: var(--ficde-azul-dark); font-size: 1.3rem; font-weight: 700; margin-bottom: 10px; }
+
+        .block-desc { 
+            color: var(--texto-secundario); 
+            font-size: 0.9rem; 
+            line-height: 1.5; 
+            word-wrap: break-word;
+            word-break: break-word;
+            overflow-wrap: break-word;
+        }
+
+        .activity-screen {
+            display: none;
+            grid-template-columns: 280px 1fr;
+            gap: 25px;
+            align-items: start;
+        }
+
+        .activity-screen.active { display: grid; }
+
+        .tutor-sidebar {
+            background: var(--ficde-azul-light);
+            padding: 30px;
+            border-radius: 16px;
+            text-align: center;
+            color: white;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.2);
+            position: sticky; top: 20px;
+        }
+
+        .tutor-bubble {
+            background: rgba(255,255,255,0.95);
+            padding: 20px;
+            border-radius: 12px;
+            font-size: 0.95rem;
+            color: var(--ficde-azul-dark);
+            margin-top: 20px;
+            position: relative;
+            text-align: left;
+            word-wrap: break-word;
+            word-break: break-word;
+            overflow-wrap: break-word;
+        }
+
+        .tutor-bubble::after {
+            content: '';
+            position: absolute;
+            top: -10px;
+            left: 50%;
+            border-width: 0 10px 10px;
+            border-style: solid;
+            border-color: transparent transparent rgba(255,255,255,0.95);
+            transform: translateX(-50%);
+        }
+
+        .activity-content {
+            background: var(--tarjeta-bg);
+            padding: 40px;
+            border-radius: 16px;
+            min-height: 500px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+        }
+
+        .act-badge {
+            background: var(--ficde-naranja);
+            color: white;
+            padding: 5px 15px;
+            border-radius: 4px;
+            font-size: 0.75rem;
+            font-weight: 700;
+            text-transform: uppercase;
+        }
+
+        .act-title { font-size: 1.8rem; color: var(--ficde-azul-dark); margin: 15px 0; font-weight: 800; }
+
+        .act-instruction { 
+            font-size: 1.1rem; 
+            color: var(--texto-secundario); 
+            margin-bottom: 30px; 
+            word-wrap: break-word;
+            word-break: break-word;
+            overflow-wrap: break-word;
+        }
+
+        .student-input {
+            width: 100%;
+            height: 150px;
+            padding: 20px;
+            background: var(--input-bg);
+            border: 2px solid transparent;
+            border-radius: 12px;
+            font-family: 'Poppins', sans-serif;
+            font-size: 1rem;
+            color: var(--ficde-azul-dark);
+            transition: all 0.3s;
+        }
+
+        .student-input:focus { background: white; border-color: var(--ficde-naranja); outline: none; }
+
+        .fill-input {
+            border: none;
+            border-bottom: 2px solid var(--ficde-naranja);
+            background: transparent;
+            font-weight: 700;
+            color: var(--ficde-azul-dark);
+            text-align: center;
+            width: 150px;
+            font-size: 1.1rem;
+        }
+
+        .btn-action {
+            width: 100%;
+            padding: 18px;
+            margin-top: 30px;
+            border: none;
+            border-radius: 50px;
+            font-weight: 700;
+            font-size: 1.1rem;
+            cursor: pointer;
+            background: linear-gradient(90deg, var(--ficde-naranja), #ff9f85);
+            color: white;
+            box-shadow: 0 6px 20px rgba(230, 129, 97, 0.4);
+            transition: transform 0.2s;
+        }
+
+        .btn-action:hover { transform: translateY(-3px); }
+
+        .btn-back {
+            background: transparent;
+            color: var(--texto-secundario);
+            box-shadow: none;
+            border: 2px solid #ccc;
+            margin-top: 15px;
+        }
+
+        .btn-back:hover { background: #e0e0e0; color: var(--ficde-azul-dark); }
+
+        .traffic-row, .checklist-item {
+            background: white;
+            margin-bottom: 12px;
+            padding: 15px 20px;
+            border-radius: 10px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+            border: 1px solid transparent;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .traffic-row:hover, .checklist-item:hover { border-color: var(--ficde-naranja); transform: translateX(5px); }
+
+        .traffic-btn {
+            width: 35px; height: 35px;
+            border-radius: 50%; border: 2px solid #ddd;
+            cursor: pointer;
+            opacity: 0.3;
+        }
+
+        .traffic-btn.active { opacity: 1; transform: scale(1.2); border-color: var(--ficde-azul-dark); }
+
+        .bg-green { background: #4CAF50; }
+
+        .bg-yellow { background: #FFC107; }
+
+        .bg-red { background: #f44336; }
+
+        .check-box {
+            width: 24px; height: 24px;
+            border: 2px solid #ccc;
+            border-radius: 4px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 15px;
+        }
+
+        .checklist-item.selected { border-color: var(--ficde-naranja); background: #fff5f0; }
+
+        .checklist-item.selected .check-box { background: var(--ficde-naranja); border-color: var(--ficde-naranja); color: white; }
+
+        .feedback-area {
+            margin-top: 30px;
+            padding: 25px;
+            border-radius: 12px;
+            display: none;
+            animation: slideUp 0.4s;
+        }
+
+        .feedback-success { background: var(--verde-bg); color: #1b5e20; border-left: 6px solid var(--verde-exito); }
+
+        .feedback-retry { background: var(--naranja-bg); color: #bf360c; border-left: 6px solid #ef6c00; }
+
+        .feedback-fail { background: #cfd8dc; color: #37474f; border-left: 6px solid #455a64; }
+
+        #musicToggle {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background: var(--ficde-naranja);
+            color: white;
+            border: none;
+            cursor: pointer;
+            z-index: 100;
+            font-size: 1.5rem;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.4);
+        }
+
+        @keyframes slideUp {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @media (max-width: 768px) {
+            .activity-screen { grid-template-columns: 1fr; }
+            .tutor-sidebar { display: flex; align-items: center; gap: 20px; }
+            .fede-avatar-large { width: 80px; height: 80px; }
+            .tutor-bubble::after { display: none; }
+        }
+    </style>
+</head>
+
+<body>
+    <!-- AUDIOS MP3 -->
+    <audio id="bgMusic" loop preload="auto">
+        <source src="chill-study-desk-focus-concentration-lofi-451180.mp3" type="audio/mpeg">
+    </audio>
+
+    <audio id="saludoInicial" preload="auto" src="saludoinicial.mp3"></audio>
+    <audio id="mensaje1Ejercicios" preload="auto" src="mensaje1ejercicios.mp3"></audio>
+    <audio id="mensaje2Ejercicios" preload="auto" src="mensaje2ejercicios.mp3"></audio>
+    <audio id="mensaje3Ejercicios" preload="auto" src="mensaje3ejercicios.mp3"></audio>
+    <audio id="mensaje4Ejercicios" preload="auto" src="mensaje4ejercicios.mp3"></audio>
+    <audio id="respuestaCorrecta" preload="auto" src="respuestacorrecta.mp3"></audio>
+    <audio id="primerError" preload="auto" src="primererror.mp3"></audio>
+    <audio id="segundoError" preload="auto" src="segundoerror.mp3"></audio>
+    <audio id="loLograste" preload="auto" src="lolograste.mp3"></audio>
+
+    <audio id="hoverSound" preload="auto" src="https://assets.mixkit.co/active_storage/sfx/2571/2571-preview.m4a"></audio>
+    <audio id="clickSound" preload="auto" src="https://assets.mixkit.co/active_storage/sfx/2568/2568-preview.m4a"></audio>
+    <audio id="successSound" preload="auto" src="https://assets.mixkit.co/active_storage/sfx/1435/1435-preview.m4a"></audio>
+
+    <button id="musicToggle" onclick="toggleMusic()">🔇</button>
+
+    <div class="container">
+        <header>
+            <div class="logo-container">
+                <img src="logo.png" alt="FICDE" class="logo-img" onerror="this.style.display='none'; document.getElementById('altLogo').style.display='block'">
+                <h2 id="altLogo" style="display:none; color:white; font-weight:800;">FICDE</h2>
+            </div>
+            <div class="module-tag">Módulo: 2 LAMINADO HENNA Y COLORIMETRÍA DE CEJAS</div>
+        </header>
+
+        <div id="selectionScreen">
+            <div class="welcome-card">
+                <div class="fede-avatar-large" onclick="playAudio('saludoInicial')">
+                    <img src="personaje.gif" alt="Fede">
+                </div>
+                <h1 class="welcome-title">Espacio de Repaso Interactivo</h1>
+                <p style="color: var(--texto-secundario); font-size: 1.1rem;">Donde el conocimiento se convierte en acción</p>
+            </div>
+
+            <div class="blocks-grid">
+                <div class="block-card" onclick="startModule('sintesis')">
+                    <div class="block-icon">🧠</div>
+                    <div class="block-title">Síntesis</div>
+                    <div class="block-desc">laminado de cejas, productos y pH, instrumental, diagnóstico del vello, protocolo de aplicación, direccionamiento, colorimetría, henna y tintes de oxidación.</div>
+                </div>
+
+                <div class="block-card" onclick="startModule('analisis')">
+                    <div class="block-icon">🔍</div>
+                    <div class="block-title">Análisis Crítico</div>
+                    <div class="block-desc">errores en tiempos y neutralización, diagnóstico y prueba de sensibilidad, sobreprocesamiento y direccionamiento del vello, fallas de colorimetría, aplicación de tintes y henna, y cuidados posteriores.</div>
+                </div>
+
+                <div class="block-card" onclick="startModule('escenarios')">
+                    <div class="block-icon">🎬</div>
+                    <div class="block-title">Escenarios</div>
+                    <div class="block-desc">atención según características del vello y sensibilidad cutánea, corrección de color, laminado y henna, selección de tintes, situaciones especiales, asimetrías, retención del pigmento y mantenimiento.</div>
+                </div>
+
+                <div class="block-card" onclick="startModule('practica')">
+                    <div class="block-icon">⚡</div>
+                    <div class="block-title">Práctica</div>
+                    <div class="block-desc">higiene y preparación, aplicación de productos de laminado y nutrición, preparación y aplicación de henna y tinte, retiro del pigmento, peinado final y cuidados domiciliarios.</div>
+                </div>
+            </div>
+        </div>
+
+        <div id="activityScreen" class="activity-screen">
+            <div class="tutor-sidebar">
+                <div class="fede-avatar-large" style="width: 100px; height: 100px; border-color: var(--ficde-naranja);" onclick="replayTutorMessage()">
+                    <img src="personaje.gif" alt="Fede">
+                </div>
+                <div style="flex:1;">
+                    <h3 style="color:var(--ficde-naranja); margin-bottom:5px;">Tutor Fede</h3>
+                    <div class="tutor-bubble" id="tutorMessage"></div>
+                </div>
+            </div>
+
+            <div class="activity-content" id="activityContainer"></div>
+        </div>
+    </div>
+
+    <script>
+        // ===== GESTIÓN DE AUDIO MP3 =====
+        const audioFiles = {
+            saludoInicial: document.getElementById('saludoInicial'),
+            mensaje1: document.getElementById('mensaje1Ejercicios'),
+            mensaje2: document.getElementById('mensaje2Ejercicios'),
+            mensaje3: document.getElementById('mensaje3Ejercicios'),
+            mensaje4: document.getElementById('mensaje4Ejercicios'),
+            correcto: document.getElementById('respuestaCorrecta'),
+            error1: document.getElementById('primerError'),
+            error2: document.getElementById('segundoError'),
+            lolograste: document.getElementById('loLograste')
+        };
+
+        function playAudio(audioKey) {
+            if (audioFiles[audioKey]) {
+                audioFiles[audioKey].currentTime = 0;
+                audioFiles[audioKey].play().catch(err => console.log('Error al reproducir audio:', err));
+            }
+        }
+
+        const bgMusic = document.getElementById('bgMusic');
+        const clickSoundEl = document.getElementById('clickSound');
+        const successSoundEl = document.getElementById('successSound');
+        const hoverSoundEl = document.getElementById('hoverSound');
+
+        let musicOn = false;
+        let audioUnlocked = false;
+
+        function unlockAudio() {
+            if (audioUnlocked) return;
+            Object.values(audioFiles).forEach(a => {
+                a.volume = 0;
+                const p = a.play();
+                if (p) p.then(() => { a.pause(); a.currentTime = 0; a.volume = 1; }).catch(()=>{});
+            });
+            audioUnlocked = true;
+        }
+
+        document.addEventListener('pointerdown', unlockAudio, { once: true });
+        document.addEventListener('keydown', unlockAudio, { once: true });
+
+        function toggleMusic() {
+            unlockAudio();
+            if (!musicOn) {
+                bgMusic.volume = 0.1;
+                bgMusic.play().catch(() => {});
+                document.getElementById('musicToggle').innerText = '🎵';
+            } else {
+                bgMusic.pause();
+                document.getElementById('musicToggle').innerText = '🔇';
+            }
+            musicOn = !musicOn;
+        }
+
+        function playSound(type) {
+            if (!audioUnlocked) return;
+            try {
+                if (type === 'click') { clickSoundEl.currentTime=0; clickSoundEl.volume=0.8; clickSoundEl.play().catch(()=>{}); }
+                if (type === 'success') { successSoundEl.currentTime=0; successSoundEl.volume=0.8; successSoundEl.play().catch(()=>{}); }
+                if (type === 'hover') { hoverSoundEl.currentTime=0; hoverSoundEl.volume=0.2; hoverSoundEl.play().catch(()=>{}); }
+            } catch (e) {}
+        }
+
+        function wireUiSounds() {
+            document.querySelectorAll('.block-card, .btn-action, .checklist-item, .traffic-row, .fede-avatar-large').forEach(el => {
+                if (el.dataset.sound === '1') return;
+                el.dataset.sound = '1';
+                el.addEventListener('mouseenter', () => playSound('hover'));
+                el.addEventListener('click', () => playSound('click'));
+            });
+        }
+
+        window.addEventListener('load', wireUiSounds);
+
+        // ===== NORMALIZACIÓN DE TEXTO =====
+        function normalizar(txt) {
+            return txt.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+        }
+
+        // ===== ACTIVIDADES =====
+        const modules = {
+            sintesis: [
+                {
+                    type: 'text',
+                    badge: "Introducción al laminado",
+                    title: "Concepto y mecanismo",
+                    instruction: "Define el concepto del laminado de cejas explicando cómo trabaja sobre la fibra capilar existente.",
+                    tutor: "Considera que el tratamiento no añade pigmento ni reemplaza pelos sino que reorganiza su forma.",
+                    explanation: "El laminado modifica temporalmente el vello existente para controlar su dirección y dar sensación de volumen.",
+                    validation: (raw) => {
+                        const v = normalizar(raw);
+                        const roots = ["lamina", "vello", "direcc", "modifi", "tempor", "existe", "contro", "sensac", "volume", "define"];
+                        return roots.filter(r => v.includes(r)).length >= 2;
+                    }
+                },
+                {
+                    type: 'text',
+                    badge: "Beneficios estéticos",
+                    title: "Ventajas del procedimiento",
+                    instruction: "Clasifica los principales beneficios estéticos que aporta el laminado en cejas rebeldes o con escaso orden.",
+                    tutor: "Repasa cómo mejora la disciplina del vello, reduce el maquillaje diario y brinda una apariencia más tupida.",
+                    explanation: "El tratamiento aporta orden al crecimiento, mejora la definición del diseño y genera ilusión de volumen.",
+                    validation: (raw) => {
+                        const v = normalizar(raw);
+                        const roots = ["orden", "defini", "volume", "tratam", "aporta", "crecim", "mejora", "diseno", "genera", "ilusio"];
+                        return roots.filter(r => v.includes(r)).length >= 2;
+                    }
+                },
+                {
+                    type: 'checklist',
+                    badge: "Química de productos",
+                    title: "Agentes y escala de pH",
+                    instruction: "Selecciona los tres valores de pH correspondientes al permanentador, neutralizante e hidratante en el laminado.",
+                    items: [
+                        { text: "Permanentador con pH alcalino entre 8,5 y 9", correct: true },
+                        { text: "Neutralizante con pH ácido entre 3 y 3,5", correct: true },
+                        { text: "Hidratante con pH fisiológico entre 5 y 5,8", correct: true },
+                        { text: "Permanentador con pH ácido neutro de 2", correct: false }
+                    ].sort(() => Math.random() - 0.5),
+                    tutor: "Identifica la alcalinidad que abre la cutícula, la acidez que cierra la estructura y la hidratación fisiológica.",
+                    explanation: "El permanentador alcalino abre la cutícula, el neutralizante ácido fija la forma y el hidratante equilibra el pH."
+                },
+                {
+                    type: 'text',
+                    badge: "Materiales de trabajo",
+                    title: "Instrumental y descartables",
+                    instruction: "Detalla las diferencias operativas entre el instrumental reutilizable y los materiales de uso único descartables.",
+                    tutor: "Distingue las herramientas que requieren esterilización o desinfección de los elementos que se desechan inmediatamente.",
+                    explanation: "El instrumental reutilizable exige esterilización constante mientras el material descartable refuerza la bioseguridad tras cada uso.",
+                    validation: (raw) => {
+                        const v = normalizar(raw);
+                        const roots = ["reutil", "descar", "bioseg", "instru", "exige", "esteri", "consta", "mientr", "materi", "refuer"];
+                        return roots.filter(r => v.includes(r)).length >= 2;
+                    }
+                },
+                {
+                    type: 'blanks',
+                    anyOrder: false,
+                    badge: "Evaluación del cliente",
+                    title: "Anamnesis y diagnóstico",
+                    instruction: "Completar la frase<br><br>Antes del tratamiento se realiza la _________ para conocer antecedentes de alergias, salud de la _____ y características del _____.",
+                    blanks: ["anamnesis", "piel", "vello"],
+                    tutor: "Recuerda el interrogatorio previo y la inspección minuciosa necesaria para adaptar el protocolo individual.",
+                    explanation: "Efectuar la anamnesis previa evalúa el estado de la piel y la resistencia del vello antes de aplicar químicos."
+                },
+                {
+                    type: 'text',
+                    badge: "Protocolo de laminado",
+                    title: "Secuencia de pasos",
+                    instruction: "Expone la secuencia ordenada de las etapas que componen el protocolo profesional de laminado de cejas.",
+                    tutor: "Agrupa la limpieza inicial, la acción reductora, el fijado de dirección y los tratamientos finales de nutrición.",
+                    explanation: "El protocolo inicia con la higiene, aplica el producto de exposición y culmina con la neutralización y nutrición.",
+                    validation: (raw) => {
+                        const v = normalizar(raw);
+                        const roots = ["higien", "exposi", "neutra", "protoc", "inicia", "aplica", "produc", "culmin", "nutric", "expone"];
+                        return roots.filter(r => v.includes(r)).length >= 2;
+                    }
+                },
+                {
+                    type: 'checklist',
+                    badge: "Geometría del peinado",
+                    title: "Ángulos de direccionamiento",
+                    instruction: "Identifica los tres ángulos de peinado recomendados para el inicio, cuerpo y cola de la ceja durante el laminado.",
+                    items: [
+                        { text: "Inicio con inclinación vertical de 70° a 90°", correct: true },
+                        { text: "Cuerpo con dirección diagonal de 45° a 55°", correct: true },
+                        { text: "Cola con alineación casi horizontal de 0° a 5°", correct: true },
+                        { text: "Inicio con inclinación horizontal invertida de \\-30°", correct: false }
+                    ].sort(() => Math.random() - 0.5),
+                    tutor: "Analiza la gradación natural que va desde la verticalidad en el frente hasta el acueste paulatino en la cola.",
+                    explanation: "Peinar el inicio a noventa grados, el cuerpo en diagonal y la cola horizontal respeta la anatomía."
+                },
+                {
+                    type: 'text',
+                    badge: "Fundamentos del color",
+                    title: "Pilares de la colorimetría",
+                    instruction: "Describe las tres variables fundamentales que definen el color según la teoría aplicada al diseño de cejas.",
+                    tutor: "Considera la base del color (rubio a negro), la fuerza de saturación del pigmento y la calidez o frialdad del matiz.",
+                    explanation: "La elección del pigmento evalúa el tono base, la intensidad deseada y la temperatura adecuada para la piel.",
+                    validation: (raw) => {
+                        const v = normalizar(raw);
+                        const roots = ["tono", "intens", "temper", "elecci", "pigmen", "evalua", "base", "desead", "adecua", "piel"];
+                        return roots.filter(r => v.includes(r)).length >= 2;
+                    }
+                },
+                {
+                    type: 'traffic',
+                    badge: "Pigmentación vegetal",
+                    title: "Propiedades de la henna",
+                    instruction: "Marca afirmaciones correctas",
+                    items: [
+                        { text: "La henna es un pigmento vegetal que aporta color tanto al vello como a la superficie cutánea", color: "green" },
+                        { text: "La henna requiere mezclarse con agua oxigenada de alto volumen para activar su pigmentación", color: "red" },
+                        { text: "La fijación de la henna en la piel suele mantenerse entre 5 y 10 días según el biotipo cutáneo", color: "green" },
+                        { text: "La henna altera permanentemente la estructura proteica de la corteza capilar sin desvanecerse", color: "red" }
+                    ].sort(() => Math.random() - 0.5),
+                    tutor: "Contrasta el depósito superficial de la henna en piel y pelo con el mecanismo oxidativo de los tintes.",
+                    explanation: "La henna tiñe la piel y el vello temporalmente, ofreciendo un rellenado natural sin activador químico."
+                },
+                {
+                    type: 'text',
+                    badge: "Tintes de oxidación",
+                    title: "Acción en la fibra capilar",
+                    instruction: "Sintetiza la diferencia principal entre la acción del tinte de oxidación con activador y la pigmentación con henna.",
+                    tutor: "Observa cómo los tintes de oxidación actúan principalmente penetrando la fibra sin teñir la piel por tiempo prolongado.",
+                    explanation: "El tinte mezclado con activador penetra la corteza del vello logrando una definición duradera sin manchar la piel.",
+                    validation: (raw) => {
+                        const v = normalizar(raw);
+                        const roots = ["tinte", "activa", "cortez", "mezcla", "penetr", "vello", "logran", "defini", "durade", "mancha"];
+                        return roots.filter(r => v.includes(r)).length >= 2;
+                    }
+                }
+            ],
+            analisis: [
+                {
+                    type: 'text',
+                    badge: "Sobreexposición química",
+                    title: "Daño por tiempo excesivo",
+                    instruction: "Examina las consecuencias estructurales en la fibra capilar cuando se excede el tiempo recomendado del Paso 1.",
+                    tutor: "Reflexiona sobre la rotura descontrolada de puentes disulfuro que deshidrata el pelo y vuelve frágil la cutícula.",
+                    explanation: "La sobreexposición al permanentador provoca el debilitamiento del vello y favorece su quiebre inmediato.",
+                    validation: (raw) => {
+                        const v = normalizar(raw);
+                        const roots = ["sobree", "debili", "quiebr", "perman", "provoc", "vello", "favore", "inmedi", "examin", "consec"];
+                        return roots.filter(r => v.includes(r)).length >= 2;
+                    }
+                },
+                {
+                    type: 'text',
+                    badge: "Fallas de neutralización",
+                    title: "Omisión del Paso 2",
+                    instruction: "Evalúa los problemas de durabilidad y salud del vello si se retira el Paso 1 sin aplicar correctamente el neutralizante.",
+                    tutor: "Considera la imposibilidad de reconectar la estructura química del pelo y la pérdida rápida de la forma deseada.",
+                    explanation: "Omitir el neutralizante impide la fijación definitiva de la fibra generando inestabilidad en el diseño.",
+                    validation: (raw) => {
+                        const v = normalizar(raw);
+                        const roots = ["neutra", "fijaci", "inesta", "omitir", "impide", "defini", "fibra", "genera", "diseno", "evalua"];
+                        return roots.filter(r => v.includes(r)).length >= 2;
+                    }
+                },
+                {
+                    type: 'checklist',
+                    badge: "Contraindicaciones del servicio",
+                    title: "Patologías y alertas cutáneas",
+                    instruction: "Escoge las tres condiciones cutáneas o médicas que representan contraindicaciones absolutas para el laminado.",
+                    items: [
+                        { text: "Infecciones activas o dermatitis en la zona", correct: true },
+                        { text: "Heridas abiertas o quemaduras recientes", correct: true },
+                        { text: "Reacciones alérgicas previas a los componentes", correct: true },
+                        { text: "Presencia de vellos rebeldes pero sanos", correct: false }
+                    ].sort(() => Math.random() - 0.5),
+                    tutor: "Identifica los procesos inflamatorios, infecciosos o alérgicos que impiden la aplicación segura de productos químicos.",
+                    explanation: "Presentar infecciones, heridas abiertas o alergias conocidas contraindica absolutamente la realización del tratamiento."
+                },
+                {
+                    type: 'text',
+                    badge: "Errores de peinado",
+                    title: "Direccionamiento forzado",
+                    instruction: "Explica los riesgos estéticos y de quiebre al peinar el vello en un ángulo vertical rígido no anatómico.",
+                    tutor: "Analiza la tensión mecánica excesiva en la raíz y la apariencia artificial que endurece las facciones del rostro.",
+                    explanation: "Forzar un ángulo vertical genera rigidez poco natural y aumenta el riesgo de sobreprocesamiento en la raíz.",
+                    validation: (raw) => {
+                        const v = normalizar(raw);
+                        const roots = ["angulo", "rigide", "sobrep", "forzar", "vertic", "genera", "poco", "natura", "aument", "riesgo"];
+                        return roots.filter(r => v.includes(r)).length >= 2;
+                    }
+                },
+                {
+                    type: 'blanks',
+                    anyOrder: false,
+                    badge: "Desatinos en colorimetría",
+                    title: "Error de subtono",
+                    instruction: "Completar la frase<br><br>Aplicar un pigmento cálido en una piel de subtono _____ genera reflejos anaranjados que alteran la _______ y el aspecto del ______.",
+                    blanks: ["frío", "armonía", "rostro"],
+                    tutor: "Piensa en el choque cromático al ignorar si la temperatura de la piel es fría o cálida durante la selección.",
+                    explanation: "Ignorar el subtono frío rompe la armonía del diseño endureciendo la expresión del rostro."
+                },
+                {
+                    type: 'text',
+                    badge: "Exceso de pigmentación",
+                    title: "Tonos demasiado oscuros",
+                    instruction: "Juzga las dificultades para corregir una ceja sobrepigmentada por exceso de tiempo de exposición con tinte.",
+                    tutor: "Observa lo agresivo que resulta intentar remover pigmento concentrado en la piel y el pelo sin irritar la zona.",
+                    explanation: "Una pigmentación excesiva produce oscuridad artificial requiriendo limpiezas suaves para reducir la saturación.",
+                    validation: (raw) => {
+                        const v = normalizar(raw);
+                        const roots = ["pigmen", "oscuri", "satura", "excesi", "produc", "artifi", "requir", "limpie", "suaves", "reduci"];
+                        return roots.filter(r => v.includes(r)).length >= 2;
+                    }
+                },
+                {
+                    type: 'checklist',
+                    badge: "Mezclas inadecuadas",
+                    title: "Consistencia de la henna",
+                    instruction: "Menciona las tres fallas técnicas que ocurren al preparar la henna con una consistencia demasiado líquida o grumosa.",
+                    items: [
+                        { text: "Derrames no deseados fuera del diseño marcado", correct: true },
+                        { text: "Pigmentación irregular con manchas heterogéneas", correct: true },
+                        { text: "Dificultad para lograr una capa homogénea sobre la piel", correct: true },
+                        { text: "Fijación perfecta y secado uniforme en tres minutos", correct: false }
+                    ].sort(() => Math.random() - 0.5),
+                    tutor: "Busca los problemas de control del producto y la falta de cobertura pareja al alterar la textura ideal.",
+                    explanation: "Las mezclas grumosas causan derrames, generan pigmentación despareja e impiden una cobertura homogénea."
+                },
+                {
+                    type: 'text',
+                    badge: "Omisión de pruebas",
+                    title: "Riesgos sin parche de sensibilidad",
+                    instruction: "Argumenta por qué aplicar tintes o henna sin prueba de sensibilidad previa puede desencadenar dermatitis de contacto.",
+                    tutor: "Contempla la respuesta del sistema inmune ante sensibilizantes cosméticos y la inflamación severa en párpados.",
+                    explanation: "Omitir la prueba de sensibilidad puede ocultar una alergia latente provocando edema e irritación aguda.",
+                    validation: (raw) => {
+                        const v = normalizar(raw);
+                        const roots = ["sensib", "alergi", "edema", "omitir", "prueba", "puede", "oculta", "latent", "provoc", "irrita"];
+                        return roots.filter(r => v.includes(r)).length >= 2;
+                    }
+                },
+                {
+                    type: 'traffic',
+                    badge: "Vulnerabilidad post-servicio",
+                    title: "Ventana crítica de 24 a 48 horas",
+                    instruction: "Marca afirmaciones correctas",
+                    items: [
+                        { text: "Mojar o exponer las cejas a vapor en las primeras 24 horas desestabiliza la fijación del laminado", color: "green" },
+                        { text: "Aplicar aceites pesados inmediatamente después del neutralizante potencia la durabilidad del peinado", color: "red" },
+                        { text: "Evitar frotar el rostro y suspender exfoliantes protege la fibra capilar recién procesada", color: "green" },
+                        { text: "El uso de saunas o agua muy caliente en el primer día acelera la fijación química del vello", color: "red" }
+                    ].sort(() => Math.random() - 0.5),
+                    tutor: "Asocia el agua, el vapor y el frotado temprano con la pérdida prematura de la forma y el color.",
+                    explanation: "El contacto con agua o vapor en la ventana crítica altera la fijación y degrada el tratamiento."
+                },
+                {
+                    type: 'text',
+                    badge: "Frote agresivo",
+                    title: "Daño en la retirada de producto",
+                    instruction: "Analiza los efectos nocivos de retirar los pasos químicos o la henna frotando la piel con fuerza excesiva.",
+                    tutor: "Evalúa la sensibilidad de la epidermis tratada químicamente ante la fricción mecánica de algodones o toallitas.",
+                    explanation: "La fricción por frote agresivo genera irritación en la piel y causa la descamación del pigmento.",
+                    validation: (raw) => {
+                        const v = normalizar(raw);
+                        const roots = ["frote", "irrita", "descam", "fricci", "agresi", "genera", "piel", "causa", "pigmen", "analiz"];
+                        return roots.filter(r => v.includes(r)).length >= 2;
+                    }
+                }
+            ],
+            escenarios: [
+                {
+                    type: 'text',
+                    badge: "Vello rebelde",
+                    title: "Protocolo para cejas rizadas",
+                    instruction: "Plantea la estrategia de laminado para un cliente con vello grueso y rizado que busca dirección uniforme.",
+                    tutor: "Contempla la necesidad de controlar minuciosamente el tiempo del permanentador y usar film osmótico para aplanar la fibra.",
+                    explanation: "Abordar este vello requiere ajustar los tiempos de exposición y fijar la dirección con film osmótico.",
+                    validation: (raw) => {
+                        const v = normalizar(raw);
+                        const roots = ["vello", "tiempo", "direcc", "aborda", "requie", "ajusta", "exposi", "fijar", "film", "osmoti"];
+                        return roots.filter(r => v.includes(r)).length >= 2;
+                    }
+                },
+                {
+                    type: 'traffic',
+                    badge: "Piel reactiva",
+                    title: "Cliente con rosácea o sensibilidad",
+                    instruction: "Marca afirmaciones correctas",
+                    items: [
+                        { text: "En pieles reactivas se debe realizar una prueba de parche previa y emplear productos de pH suave", color: "green" },
+                        { text: "Es recomendable aplicar gel exfoliante con ácido glicólico justo antes de iniciar el laminado", color: "red" },
+                        { text: "Evitar el exceso de producto sobre la piel limita el riesgo de eritema o picazón en zonas delicadas", color: "green" },
+                        { text: "La presencia de eccema activo en la ceja no impide aplicar el permanentador si se deja menos tiempo", color: "red" }
+                    ].sort(() => Math.random() - 0.5),
+                    tutor: "Analiza la conveniencia de proteger la barrera cutánea delicada y evitar maniobras exfoliantes previas.",
+                    explanation: "Proteger la piel reactiva exige evitar exfoliantes agresivos y aplicar cuidados preventivos."
+                },
+                {
+                    type: 'text',
+                    badge: "Corrección de tono",
+                    title: "Neutralización de matiz indeseado",
+                    instruction: "Diseña la solución colorimétrica para neutralizar un reflejo anaranjado resultante de una aplicación previa.",
+                    tutor: "Recurre a la rueda de color e identifica el color complementario que anula los visos cálidos indeseados.",
+                    explanation: "La neutralización del reflejo anaranjado requiere un tinte con matiz azul para equilibrar el tono.",
+                    validation: (raw) => {
+                        const v = normalizar(raw);
+                        const roots = ["neutra", "azul", "matiz", "reflej", "anaran", "requie", "tinte", "equili", "tono", "disena"];
+                        return roots.filter(r => v.includes(r)).length >= 2;
+                    }
+                },
+                {
+                    type: 'checklist',
+                    badge: "Cejas hiperdensas",
+                    title: "Laminado y orden sin depilar",
+                    instruction: "Puntualiza las tres acciones correctas para trabajar una ceja con abundancia de vello desordenado.",
+                    items: [
+                        { text: "Aplicar el laminado para direccionar y peinar el volumen", correct: true },
+                        { text: "Realizar un perfilado conservador eliminando solo vello disperso", correct: true },
+                        { text: "Evitar la despoblación excesiva mediante cortes violentos", correct: true },
+                        { text: "Realizar una depilación completa con cera en todo el cuerpo", correct: false }
+                    ].sort(() => Math.random() - 0.5),
+                    tutor: "Busca equilibrar el peinado del vello denso con una limpieza sutil sin restar materia prima a la ceja.",
+                    explanation: "Ordenar el volumen mediante el laminado y realizar un perfilado conservador mantiene la densidad natural."
+                },
+                {
+                    type: 'text',
+                    badge: "Espacios despoblados",
+                    title: "Rellenado óptico con henna",
+                    instruction: "Ilustra el procedimiento para aplicar henna en una cliente que presenta pequeños huecos en el cuerpo de la ceja.",
+                    tutor: "Detalla el depósito uniforme sobre el vello y la piel subyacente para lograr un efecto de sombreado reparador.",
+                    explanation: "Depositar la henna sobre la piel despoblada crea un sombreado que simula mayor densidad.",
+                    validation: (raw) => {
+                        const v = normalizar(raw);
+                        const roots = ["henna", "sombre", "densid", "deposi", "piel", "despob", "crea", "simula", "mayor", "ilustr"];
+                        return roots.filter(r => v.includes(r)).length >= 2;
+                    }
+                },
+                {
+                    type: 'traffic',
+                    badge: "Cobertura de canas",
+                    title: "Selección de tinte de oxidación",
+                    instruction: "Marca afirmaciones correctas",
+                    items: [
+                        { text: "Los tintes de oxidación combinados con activador son la opción más eficaz para cubrir canas en cejas", color: "green" },
+                        { text: "La henna vegetal pura cubre al 100% las canas duras de forma homogénea e instantánea", color: "red" },
+                        { text: "El tiempo de exposición en canas debe controlarse rigurosamente para garantizar la fijación del pigmento", color: "green" },
+                        { text: "Las canas requieren un aclarado previo con decolorante fuerte antes de aplicar cualquier tinte", color: "red" }
+                    ].sort(() => Math.random() - 0.5),
+                    tutor: "Observa cómo la estructura porosa pero dura de la cana responde mejor al tinte oxidativo.",
+                    explanation: "El tinte de oxidación penetra la cana rebelde, devolviendo el color de manera uniforme."
+                },
+                {
+                    type: 'text',
+                    badge: "Consulta preventiva",
+                    title: "Cliente en gestación o lactancia",
+                    instruction: "Desglosa los criterios profesionales para atender a una cliente embarazada que solicita laminado y tinte.",
+                    tutor: "Evalúa la mayor sensibilidad hormonal, la necesidad de consulta médica y la realización obligatoria de prueba cutánea.",
+                    explanation: "Actuar con prudencia durante la gestación implica realizar pruebas previas y sugerir autorización médica.",
+                    validation: (raw) => {
+                        const v = normalizar(raw);
+                        const roots = ["gestac", "pruden", "autori", "actuar", "durant", "implic", "realiz", "prueba", "previa", "sugeri"];
+                        return roots.filter(r => v.includes(r)).length >= 2;
+                    }
+                },
+                {
+                    type: 'checklist',
+                    badge: "Corrección visual",
+                    title: "Asimetría de altura",
+                    instruction: "Reúne las tres técnicas de compensación visual para disimular una diferencia de altura entre ambas cejas.",
+                    items: [
+                        { text: "Redireccionar el vello de la ceja más baja ligeramente hacia arriba", correct: true },
+                        { text: "Aplicar henna con sombreado sutil en la franja superior de la ceja baja", correct: true },
+                        { text: "Mantener un diseño armónico sin buscar simetría matemática rígida", correct: true },
+                        { text: "Rasurar completamente la ceja más alta para redibujarla con lápiz", correct: false }
+                    ].sort(() => Math.random() - 0.5),
+                    tutor: "Busca aprovechar la flexibilidad del peinado y la sombra en piel para igualar las cejas con naturalidad.",
+                    explanation: "Igualar la altura mediante peinado, compensar con sombreado y buscar la armonía equilibra el rostro."
+                },
+                {
+                    type: 'text',
+                    badge: "Mantenimiento acelerado",
+                    title: "Cliente con piel muy grasa",
+                    instruction: "Expón las recomendaciones específicas para una cliente con sebo excesivo que pierde el tinte rápidamente.",
+                    tutor: "Analiza el impacto del seborrea en la retención del pigmento y la conveniencia de limpiadores matificantes suaves.",
+                    explanation: "La secreción de sebo acelera la pérdida de tono, exigiendo una higiene adecuada para mejorar la durabilidad.",
+                    validation: (raw) => {
+                        const v = normalizar(raw);
+                        const roots = ["sebo", "durabi", "higien", "secrec", "aceler", "perdid", "tono", "exigie", "adecua", "mejora"];
+                        return roots.filter(r => v.includes(r)).length >= 2;
+                    }
+                },
+                {
+                    type: 'traffic',
+                    badge: "Clima extremo",
+                    title: "Protección en humedad o verano",
+                    instruction: "Marca afirmaciones correctas",
+                    items: [
+                        { text: "Las actividades en piscinas con cloro o mar aceleran la pérdida del pigmento de henna y tinte", color: "green" },
+                        { text: "En climas húmedos se debe aplicar protector solar grasoso directamente sobre las cejas recién laminadas", color: "red" },
+                        { text: "La sudoración excesiva en las primeras 24 horas degrada la fijación de la estructura del vello", color: "green" },
+                        { text: "La radiación solar intensa no altera la temperatura del pigmento ni aclara el color alcanzado", color: "red" }
+                    ].sort(() => Math.random() - 0.5),
+                    tutor: "Asocia el sol, el cloro y el sudor con la oxidación del color y la deshidratación del vello.",
+                    explanation: "El cloro, la sudoración y la radiación solar disminuyen la permanencia del tratamiento."
+                }
+            ],
+            practica: [
+                {
+                    type: 'checklist',
+                    badge: "Preparación del área",
+                    title: "Protocolo de higiene inicial",
+                    instruction: "Elige los tres pasos técnicos requeridos para higienizar correctamente la ceja antes del tratamiento.",
+                    items: [
+                        { text: "Lavar la zona con espuma limpiadora facial suave", correct: true },
+                        { text: "Enjuagar residuos cosméticos utilizando agua micelar adecuada", correct: true },
+                        { text: "Secar suavemente con toques de pañuelo sin frotar", correct: true },
+                        { text: "Aplicar crema humectante pesada antes de los químicos", correct: false }
+                    ].sort(() => Math.random() - 0.5),
+                    tutor: "Agrupa la eliminación de restos grasos y maquillaje para garantizar la penetración homogénea de los químicos.",
+                    explanation: "Aplicar espuma limpiadora, retirar con agua micelar y lograr un secado completo prepara la ceja."
+                },
+                {
+                    type: 'text',
+                    badge: "Fase de reducción",
+                    title: "Aplicación del Paso 1",
+                    instruction: "Instruje paso a paso el procedimiento para distribuir el permanentador homogéneamente sobre el vello.",
+                    tutor: "Detalla el uso del microcepillo abarcando desde la raíz a las puntas y el tiempo de reposo controlado.",
+                    explanation: "Distribuir el permanentador con microcepillo garantiza la homogeneidad en la reestructuración del vello.",
+                    validation: (raw) => {
+                        const v = normalizar(raw);
+                        const roots = ["perman", "microc", "homoge", "distri", "garant", "reestr", "vello", "instru", "paso", "proced"];
+                        return roots.filter(r => v.includes(r)).length >= 2;
+                    }
+                },
+                {
+                    type: 'blanks',
+                    anyOrder: false,
+                    badge: "Fase de fijación",
+                    title: "Aplicación del Paso 2",
+                    instruction: "Completar la frase<br><br>Tras retirar el Paso 1 se aplica el _____________ peinando el vello en la _________ elegida para fijar la nueva _____.",
+                    blanks: ["neutralizante", "dirección", "forma"],
+                    tutor: "Piensa en el agente ácido que reconecta la fibra en la orientación definitiva del diseño.",
+                    explanation: "Aplicar el neutralizante en la dirección deseada estabiliza la nueva forma del peinado."
+                },
+                {
+                    type: 'traffic',
+                    badge: "Nutrición posterior",
+                    title: "Aplicación del Paso 4 Botox",
+                    instruction: "Marca afirmaciones correctas",
+                    items: [
+                        { text: "El tratamiento de Botox o nutritivo aporta aminoácidos y humedad recuperando la elasticidad del vello", color: "green" },
+                        { text: "El botox para cejas modifica químicamente los puentes disulfuro fijando la posición del pelo", color: "red" },
+                        { text: "Dejar actuar el tratamiento nutritivo unos minutos mejora la suavidad y el brillo natural de la fibra", color: "green" },
+                        { text: "El Paso 4 debe enjuagarse con detergente alcalino para remover sus aceites esenciales", color: "red" }
+                    ].sort(() => Math.random() - 0.5),
+                    tutor: "Diferencia la función reparadora del botox frente a la acción química de los pasos 1 y 2.",
+                    explanation: "El botox nutre la fibra capilar, aporta elasticidad y restaura el brillo tras los químicos."
+                },
+                {
+                    type: 'text',
+                    badge: "Preparación del pigmento",
+                    title: "Mezcla de henna",
+                    instruction: "Prescribe el método correcto para homogeneizar el polvo de henna con la solución activadora o agua mineral.",
+                    tutor: "Pauta la proporción adecuada mezclando en el dappen hasta disolver grumos y lograr textura cremosa.",
+                    explanation: "Mezclar la henna hasta eliminar grumos logra la consistencia y cremosidad ideal para aplicar.",
+                    validation: (raw) => {
+                        const v = normalizar(raw);
+                        const roots = ["henna", "consis", "cremos", "mezcla", "hasta", "elimin", "grumos", "logra", "ideal", "aplica"];
+                        return roots.filter(r => v.includes(r)).length >= 2;
+                    }
+                },
+                {
+                    type: 'checklist',
+                    badge: "Técnica de pigmentación",
+                    title: "Aplicación de henna paso a paso",
+                    instruction: "Determina los tres pasos fundamentales para aplicar henna logrando un efecto degradado profesional.",
+                    items: [
+                        { text: "Iniciar la aplicación en la cola y cuerpo de la ceja", correct: true },
+                        { text: "Aplicar en el inicio durante los últimos minutos para efecto suave", correct: true },
+                        { text: "Retirar el producto con algodón humedecido sin frotar la piel", correct: true },
+                        { text: "Colocar una capa gruesa e irregular comenzando directamente por el inicio", correct: false }
+                    ].sort(() => Math.random() - 0.5),
+                    tutor: "Enfócate en la gradación de tiempo que deja el frente más claro y el cuerpo más definido.",
+                    explanation: "Comenzar en la cola, suavizar el inicio y retirar con algodón humedecido crea un degradado armónico."
+                },
+                {
+                    type: 'text',
+                    badge: "Tintura precisa",
+                    title: "Aplicación de tinte con pincel",
+                    instruction: "Guía la colocación del tinte de oxidación utilizando un pincel biselado delimitando los bordes del diseño.",
+                    tutor: "Ordena el perfilado del tinte dentro de las líneas marcadas evitando manchas en la piel fuera del contorno.",
+                    explanation: "Usar pincel biselado sobre los bordes asegura la precisión del depósito de color en el vello.",
+                    validation: (raw) => {
+                        const v = normalizar(raw);
+                        const roots = ["pincel", "bordes", "precis", "usar", "bisela", "asegur", "deposi", "color", "vello", "guia"];
+                        return roots.filter(r => v.includes(r)).length >= 2;
+                    }
+                },
+                {
+                    type: 'traffic',
+                    badge: "Técnica de retirada",
+                    title: "Enjuague delicado",
+                    instruction: "Marca afirmaciones correctas",
+                    items: [
+                        { text: "El retiro de tintes y henna debe realizarse con discos de algodón húmedos mediante toques suaves", color: "green" },
+                        { text: "Es necesario frotar en círculos con esponja abrasiva para asegurar que el tinte se fije mejor", color: "red" },
+                        { text: "Limpiar en la dirección del peinado preserva la posición alcanzada durante el laminado", color: "green" },
+                        { text: "Usar alcohol etílico directo ayuda a retirar los restos de henna sin alterar el color", color: "red" }
+                    ].sort(() => Math.random() - 0.5),
+                    tutor: "Considera el uso de maniobras suaves a favor del pelo para no irritar la piel recién tratada.",
+                    explanation: "Usar algodón húmedo a favor del vello garantiza un retiro limpio sin causar irritación."
+                },
+                {
+                    type: 'text',
+                    badge: "Acabado profesional",
+                    title: "Peinado final con spoolie",
+                    instruction: "Pauta el peinado y acomodo definitivo de la ceja al concluir todo el protocolo de servicios.",
+                    tutor: "Detalla el paso del cepillo suave organizando cada pelo para revelar la simetría y definición lograda.",
+                    explanation: "Peinar con spoolie permite el acomodo final del vello otorgando un acabado pulcro.",
+                    validation: (raw) => {
+                        const v = normalizar(raw);
+                        const roots = ["spooli", "acomod", "acabad", "peinar", "permit", "final", "vello", "otorga", "pulcro", "pauta"];
+                        return roots.filter(r => v.includes(r)).length >= 2;
+                    }
+                },
+                {
+                    type: 'checklist',
+                    badge: "Asesoría domiciliaria",
+                    title: "Ficha de cuidados posteriores",
+                    instruction: "Compila las tres recomendaciones fundamentales que deben entregarse por escrito al cliente para el hogar.",
+                    items: [
+                        { text: "Evitar mojar o maquillar las cejas en las primeras 24 horas", correct: true },
+                        { text: "Cepillar diariamente el vello con spoolie seco en la dirección del diseño", correct: true },
+                        { text: "Aplicar aceite de ricino o sérum nutritivo a partir del segundo día", correct: true },
+                        { text: "Exponer las cejas al sol intenso y lavar con jabón de glicerina fuerte", correct: false }
+                    ].sort(() => Math.random() - 0.5),
+                    tutor: "Busca las pautas de protección inicial, hábito de cepillado e hidratación continua en el hogar.",
+                    explanation: "Restringir la humedad inicial, fomentar el cepillado diario y aplicar sérum conserva el tratamiento."
+                }
+            ]
+        };
+
+let currentModule = '';
+        let currentIndex = 0;
+        let attemptCount = 0;
+        let lastAudioModule = null;
+
+        // ===== MAPEO DE MÓDULOS A AUDIOS =====
+        const moduloAudioMap = {
+            'sintesis': 'mensaje1',
+            'analisis': 'mensaje2',
+            'escenarios': 'mensaje3',
+            'practica': 'mensaje4'
+        };
+
+        function startModule(id) {
+            playSound('click');
+            currentModule = id;
+            currentIndex = 0;
+            attemptCount = 0;
+            lastAudioModule = id;
+
+            // Reproducir el audio del módulo correspondiente
+            const audioKey = moduloAudioMap[id];
+            if (audioKey) {
+                playAudio(audioKey);
+            }
+
+            document.getElementById('selectionScreen').style.display = 'none';
+            document.getElementById('activityScreen').classList.add('active');
+
+            setTimeout(loadActivity, 300);
+        }
+
+        function loadActivity() {
+            attemptCount = 0;
+
+            if (currentIndex >= modules[currentModule].length) {
+                // Reproducir "lolograste.mp3" al terminar TODAS las preguntas
+                playAudio('lolograste');
+                playSound('success');
+                alert('¡Excelente! Completaste este bloque.');
+                setTimeout(() => {
+                    location.reload();
+                }, 2000);
+                return;
+            }
+
+            const data = modules[currentModule][currentIndex];
+            const container = document.getElementById('activityContainer');
+
+            const msg = `Pregunta ${currentIndex + 1} de ${modules[currentModule].length}: ${data.tutor}`;
+            document.getElementById('tutorMessage').innerText = msg;
+
+            let html = `<span class="act-badge">${data.badge}</span>
+                        <h2 class="act-title">${data.title}</h2>
+                        <p class="act-instruction">${data.instruction}</p>`;
+
+            if (data.type === 'text') {
+                html += `<textarea id="txtInput" class="student-input" placeholder="Escribe tu respuesta con tus palabras..."></textarea>`;
+            } else if (data.type === 'blanks') {
+                html += `<div style="font-size:1.2rem; line-height:2.5;">`;
+                data.blanks.forEach((b, i) => {
+                    html += `${i + 1}. <input type="text" class="fill-input" data-ans="${b}"> <br>`;
+                });
+                html += `</div>`;
+            } else if (data.type === 'traffic') {
+                data.items.forEach((item, i) => {
+                    html += `<div class="traffic-row" id="row-${i}">
+                                <span>${item.text}</span>
+                                <div style="display:flex; gap:10px;">
+                                    <div class="traffic-btn bg-green" onclick="selTraffic(${i}, 'green')"></div>
+                                    <div class="traffic-btn bg-yellow" onclick="selTraffic(${i}, 'yellow')"></div>
+                                    <div class="traffic-btn bg-red" onclick="selTraffic(${i}, 'red')"></div>
+                                </div>
+                            </div>`;
+                });
+            } else if (data.type === 'checklist') {
+                data.items.forEach((item) => {
+                    html += `<div class="checklist-item" onclick="toggleCheck(this)" data-correct="${item.correct}">
+                                <div class="check-box"></div>
+                                <span>${item.text}</span>
+                            </div>`;
+                });
+            }
+
+            html += `<div id="feedback" class="feedback-area"></div>
+                     <button id="btnCheck" class="btn-action" onclick="validate()">Verificar respuesta</button>
+                     <button class="btn-action btn-back" onclick="location.reload()">Salir al menú</button>`;
+
+            container.innerHTML = html;
+            wireUiSounds();
+        }
+
+        let trafficAns = {};
+
+        function selTraffic(idx, color) {
+            trafficAns[idx] = color;
+            const row = document.getElementById(`row-${idx}`);
+            row.querySelectorAll('.traffic-btn').forEach(b => b.classList.remove('active'));
+            row.querySelector(`.bg-${color}`).classList.add('active');
+            playSound('click');
+        }
+
+        function toggleCheck(el) {
+            el.classList.toggle('selected');
+            el.querySelector('.check-box').innerText = el.classList.contains('selected') ? '✓' : '';
+
+            if (el.classList.contains('selected')) {
+                el.style.borderColor = 'var(--ficde-naranja)';
+                el.querySelector('.check-box').style.background = 'var(--ficde-naranja)';
+                el.querySelector('.check-box').style.borderColor = 'var(--ficde-naranja)';
+                el.querySelector('.check-box').style.color = 'white';
+            } else {
+                el.style.borderColor = 'transparent';
+                el.querySelector('.check-box').style.background = 'transparent';
+                el.querySelector('.check-box').style.borderColor = '#ccc';
+            }
+
+            playSound('click');
+        }
+
+        function validate() {
+            const data = modules[currentModule][currentIndex];
+            const feedback = document.getElementById('feedback');
+            let isCorrect = false;
+
+            if (data.type === 'text') {
+                const val = document.getElementById('txtInput').value;
+                isCorrect = data.validation(val);
+            } else if (data.type === 'blanks') {
+                const inputs = document.querySelectorAll('.fill-input');
+                let hits = 0;
+                let usedAnswers = [];
+                inputs.forEach(inp => {
+                    const v = normalizar(inp.value.trim());
+                    if (v.length > 0) {
+                        if (data.anyOrder) {
+                            const matchedIdx = data.blanks.findIndex((ans, idx) => {
+                                if (usedAnswers.includes(idx)) return false;
+                                const normAns = normalizar(ans.trim());
+                                return (normAns === v || (v.length > 1 && normAns.startsWith(v.slice(0, Math.max(2, Math.min(v.length, normAns.length))))));
+                            });
+                            if (matchedIdx !== -1) {
+                                hits++;
+                                usedAnswers.push(matchedIdx);
+                            }
+                        } else {
+                            const ans = normalizar(inp.dataset.ans.trim());
+                            if (ans === v || (v.length > 1 && ans.startsWith(v.slice(0, Math.max(2, Math.min(v.length, ans.length)))))) {
+                                hits++;
+                            }
+                        }
+                    }
+                });
+                isCorrect = (hits === data.blanks.length);
+            } else if (data.type === 'traffic') {
+                let hits = 0;
+                data.items.forEach((item, i) => { if (trafficAns[i] === item.color) hits++; });
+                isCorrect = (hits === data.items.length);
+            } else if (data.type === 'checklist') {
+                let correct = true;
+                document.querySelectorAll('.checklist-item').forEach(item => {
+                    const sel = item.classList.contains('selected');
+                    const should = item.dataset.correct === 'true';
+                    if (sel !== should) correct = false;
+                });
+                isCorrect = correct;
+            }
+
+            feedback.style.display = 'block';
+
+            if (isCorrect) {
+                playAudio('correcto');
+                playSound('success');
+                feedback.className = 'feedback-area feedback-success';
+                feedback.innerHTML = `<strong>¡Muy bien!</strong><br>${data.explanation}`;
+                document.getElementById('btnCheck').innerText = 'Siguiente pregunta →';
+                document.getElementById('btnCheck').onclick = () => { currentIndex++; loadActivity(); };
+            } else {
+                attemptCount++;
+
+                if (attemptCount < 2) {
+                    playAudio('error1');
+                    feedback.className = 'feedback-area feedback-retry';
+                    feedback.innerHTML = `<strong>Buen intento.</strong> Revisá tu respuesta. Pista: ${data.tutor}`;
+                } else {
+                    playAudio('error2');
+                    feedback.className = 'feedback-area feedback-fail';
+                    feedback.innerHTML = `<strong>No pasa nada, aprendamos juntos:</strong><br>${data.explanation}`;
+                    document.getElementById('btnCheck').innerText = 'Entendido, continuar →';
+                    document.getElementById('btnCheck').onclick = () => { currentIndex++; loadActivity(); };
+                }
+            }
+        }
+
+        function replayTutorMessage() {
+            // Replay del último audio de módulo reproducido
+            if (lastAudioModule) {
+                const audioKey = moduloAudioMap[lastAudioModule];
+                if (audioKey) {
+                    playAudio(audioKey);
+                }
+            }
+        }
+    </script>
+</body>
+</html>
